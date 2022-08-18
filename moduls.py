@@ -18,69 +18,6 @@ import torch.nn as nn
 #         self.relu = nn.ReLU(inplace=True)
 #         self.se = SEblock(out_ch) if se else nn.Identity()
 
-#         self.downsample = downsample
-#         self.stride = stride
-
-#     def forward(self, x):
-#         residual = x
-
-#         out = self.conv1(x)
-#         out = self.bn1(out)
-#         out = self.relu(out)
-
-#         out = self.conv2(out)
-#         out = self.bn2(out)
-
-#         if self.downsample is not None:
-#             residual = self.downsample(x)
-
-#         out = self.se(out)
-#         out += residual
-#         out = self.relu(out)
-
-#         return out
-
-
-
-# class Bottleneck(nn.Module):
-#     expansion = 4
-
-#     def __init__(self, in_ch, out_ch, stride=1, downsample=None, se=False):
-#         super(Bottleneck, self).__init__()
-
-#         self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=1, bias=False)
-#         self.bn1 = nn.BatchNorm2d(out_ch)
-#         self.conv2 = nn.Conv2d(out_ch, out_ch, kernel_size=3, stride=stride, padding=1, bias=False)
-#         self.bn2 = nn.BatchNorm2d(out_ch)
-#         self.conv3 = nn.Conv2d(out_ch, out_ch * Bottleneck.expansion, kernel_size=1, bias=False)
-#         self.bn3 = nn.BatchNorm2d(out_ch * Bottleneck.expansion)
-#         self.relu = nn.ReLU(inplace=True)
-#         self.se = SEblock(out_ch) if se else nn.Identity()
-
-#         self.downsample = downsample
-#         self.stride = stride
-
-#     def forward(self, x):
-#         residual = x
-
-#         out = self.conv1(x)
-#         out = self.bn1(out)
-#         out = self.relu(out)
-
-#         out = self.conv2(out)
-#         out = self.bn2(out)
-#         out = self.relu(out)
-
-#         out = self.conv3(out)
-#         out = self.bn3(out)
-#         if self.downsample is not None:
-#             residual = self.downsample(x)
-#         out = self.se(out)
-#         out += residual
-#         out = self.relu(out)
-
-#         return out
-
 def conv3x3(in_channel, out_channel, stride=1):
     "3x3 convolution with padding"
     return nn.Conv2d(in_channel, out_channel, kernel_size=3, stride=stride,
@@ -97,6 +34,7 @@ class BasicBlock(nn.Module):
         self.conv2 = conv3x3(planes, planes)
         self.bn2 = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU(inplace=True)
+        self.se = SEblock(planes) if se else nn.Identity()
 
         self.downsample = downsample
         self.stride = stride
@@ -114,6 +52,7 @@ class BasicBlock(nn.Module):
         if self.downsample is not None:
             residual = self.downsample(x)
 
+        out = self.se(out)
         out += residual
         out = self.relu(out)
 
@@ -133,6 +72,7 @@ class Bottleneck(nn.Module):
         self.conv3 = nn.Conv2d(planes, planes * Bottleneck.expansion, kernel_size=1, bias=False)
         self.bn3 = nn.BatchNorm2d(planes * Bottleneck.expansion)
         self.relu = nn.ReLU(inplace=True)
+        self.se = SEblock(planes * Bottleneck.expansion) if se else nn.Identity()
 
         self.downsample = downsample
         self.stride = stride
@@ -153,6 +93,7 @@ class Bottleneck(nn.Module):
         if self.downsample is not None:
             residual = self.downsample(x)
 
+        out = self.se(out)
         out += residual
         out = self.relu(out)
 

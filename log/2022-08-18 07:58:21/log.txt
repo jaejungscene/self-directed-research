@@ -1,0 +1,17 @@
+model:			se-resnet18
+input size:		32
+dataset:		cifar10
+batch size:		64
+epochs:			2
+the number of model parameters:	138898
+====================================================================================================
+Train	* Epoch[1/2]	Time: (0.024)	Data loading tiem: (0.000)	Top 1-err: 65.878	Top 5-err: 13.572	Loss: 1.807
+
+Test	* Epoch[1/2]	Time: (0.009)	Data loading tiem: (0.002)	Top 1-err: 55.940	Top 5-err: 8.440	Loss: 1.498
+====================================================================================================
+Train	* Epoch[2/2]	Time: (0.021)	Data loading tiem: (0.001)	Top 1-err: 49.340	Top 5-err: 6.428	Loss: 1.359
+
+Test	* Epoch[2/2]	Time: (0.008)	Data loading tiem: (0.002)	Top 1-err: 47.230	Top 5-err: 5.050	Loss: 1.301
+----------------------------------------------------------------------------------------------------
+Best accuracy (top-1 and 5 error):	47.23 and 5.05
+total time:	00:00:41
