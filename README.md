@@ -1,12 +1,11 @@
 ## self-directed research
-- implemented model: resnet, senet, cbam
-- pretrained model: ViT, DeiT
+- implemented model: resnet, se-resnet, cbam-resnet
+- pretrained and fine-tuned model: ViT, MLP-Mixer
 
 ### Requirements
 - Python3
 - PyTorch (> 1.0)
 - torchvision (> 0.2)
-- NumPy
 
 ### Train Examples
 - CIFAR-10, CIFAR-100: training input size = 32x32
