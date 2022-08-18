@@ -1,0 +1,5 @@
+model:			resnet5
+input size:		32
+dataset:		cifar10
+batch size:		128
+epochs:			2
