@@ -1,6 +1,0 @@
-no,setup,model_name,avg_top1_acc,avg_top5_acc,duration,log_dir,start_time,dataset_type,epoch,best_acc
-1,,resnet50,22.6333,58.32,0:01:24,log/resnet50_v1,2022-08-02 06:50:07,CIFAR10,2,37.62
-2,,resnet50,22.6433,57.1167,0:01:23,log/resnet50_v2,2022-08-03 05:30:20,CIFAR10,2,38.5
-3,,resnet50,20.0,56.15,0:01:22,log/resnet50_v3,2022-08-11 02:01:56,CIFAR10,2,33.12
-4,,resnet50,8.1967,24.97,0:01:54,log/resnet50_v5,2022-08-12 09:43:11,CIFAR100,3,12.49
-5,,resnet50,82.8067,96.0967,2:44:37,log/resnet50_v7,2022-08-12 09:46:57,CIFAR100,300,82.91

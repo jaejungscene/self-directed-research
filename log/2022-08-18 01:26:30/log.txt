@@ -1,5 +1,0 @@
-model:			resnet20
-input size:		32
-dataset:		cifar100
-batch size:		64
-epochs:			100
