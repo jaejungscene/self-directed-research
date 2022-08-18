@@ -308,3 +308,102 @@ Test	* Epoch[75/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 27.830	
 Train	* Epoch[76/100]	Time: (0.066)	Data loading tiem: (0.000)	Top 1-err: 5.484	Top 5-err: 0.184	Loss: 0.194
 
 Test	* Epoch[76/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.950	Top 5-err: 6.340	Loss: 1.041
+====================================================================================================
+Train	* Epoch[77/100]	Time: (0.070)	Data loading tiem: (0.000)	Top 1-err: 4.250	Top 5-err: 0.134	Loss: 0.161
+
+Test	* Epoch[77/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.440	Top 5-err: 6.060	Loss: 1.034
+====================================================================================================
+Train	* Epoch[78/100]	Time: (0.068)	Data loading tiem: (0.000)	Top 1-err: 3.946	Top 5-err: 0.112	Loss: 0.151
+
+Test	* Epoch[78/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.610	Top 5-err: 6.030	Loss: 1.050
+====================================================================================================
+Train	* Epoch[79/100]	Time: (0.074)	Data loading tiem: (0.000)	Top 1-err: 3.486	Top 5-err: 0.086	Loss: 0.140
+
+Test	* Epoch[79/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.670	Top 5-err: 6.070	Loss: 1.054
+====================================================================================================
+Train	* Epoch[80/100]	Time: (0.068)	Data loading tiem: (0.000)	Top 1-err: 3.454	Top 5-err: 0.076	Loss: 0.136
+
+Test	* Epoch[80/100]	Time: (0.025)	Data loading tiem: (0.001)	Top 1-err: 24.730	Top 5-err: 6.000	Loss: 1.064
+====================================================================================================
+Train	* Epoch[81/100]	Time: (0.075)	Data loading tiem: (0.000)	Top 1-err: 3.206	Top 5-err: 0.060	Loss: 0.130
+
+Test	* Epoch[81/100]	Time: (0.025)	Data loading tiem: (0.001)	Top 1-err: 24.850	Top 5-err: 6.140	Loss: 1.063
+====================================================================================================
+Train	* Epoch[82/100]	Time: (0.071)	Data loading tiem: (0.000)	Top 1-err: 2.970	Top 5-err: 0.068	Loss: 0.125
+
+Test	* Epoch[82/100]	Time: (0.023)	Data loading tiem: (0.001)	Top 1-err: 24.980	Top 5-err: 6.140	Loss: 1.077
+====================================================================================================
+Train	* Epoch[83/100]	Time: (0.073)	Data loading tiem: (0.000)	Top 1-err: 2.988	Top 5-err: 0.058	Loss: 0.123
+
+Test	* Epoch[83/100]	Time: (0.027)	Data loading tiem: (0.001)	Top 1-err: 24.820	Top 5-err: 6.080	Loss: 1.078
+====================================================================================================
+Train	* Epoch[84/100]	Time: (0.070)	Data loading tiem: (0.000)	Top 1-err: 2.828	Top 5-err: 0.050	Loss: 0.117
+
+Test	* Epoch[84/100]	Time: (0.023)	Data loading tiem: (0.001)	Top 1-err: 24.800	Top 5-err: 6.040	Loss: 1.075
+====================================================================================================
+Train	* Epoch[85/100]	Time: (0.067)	Data loading tiem: (0.000)	Top 1-err: 2.732	Top 5-err: 0.046	Loss: 0.114
+
+Test	* Epoch[85/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.530	Top 5-err: 6.300	Loss: 1.095
+====================================================================================================
+Train	* Epoch[86/100]	Time: (0.067)	Data loading tiem: (0.000)	Top 1-err: 2.772	Top 5-err: 0.052	Loss: 0.114
+
+Test	* Epoch[86/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.790	Top 5-err: 6.110	Loss: 1.100
+====================================================================================================
+Train	* Epoch[87/100]	Time: (0.070)	Data loading tiem: (0.000)	Top 1-err: 2.616	Top 5-err: 0.038	Loss: 0.110
+
+Test	* Epoch[87/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.860	Top 5-err: 6.160	Loss: 1.094
+====================================================================================================
+Train	* Epoch[88/100]	Time: (0.069)	Data loading tiem: (0.000)	Top 1-err: 2.550	Top 5-err: 0.040	Loss: 0.107
+
+Test	* Epoch[88/100]	Time: (0.024)	Data loading tiem: (0.001)	Top 1-err: 24.800	Top 5-err: 6.170	Loss: 1.100
+====================================================================================================
+Train	* Epoch[89/100]	Time: (0.071)	Data loading tiem: (0.000)	Top 1-err: 2.488	Top 5-err: 0.046	Loss: 0.107
+
+Test	* Epoch[89/100]	Time: (0.025)	Data loading tiem: (0.001)	Top 1-err: 24.840	Top 5-err: 6.250	Loss: 1.109
+====================================================================================================
+Train	* Epoch[90/100]	Time: (0.072)	Data loading tiem: (0.000)	Top 1-err: 2.378	Top 5-err: 0.034	Loss: 0.104
+
+Test	* Epoch[90/100]	Time: (0.025)	Data loading tiem: (0.001)	Top 1-err: 24.970	Top 5-err: 6.300	Loss: 1.118
+====================================================================================================
+Train	* Epoch[91/100]	Time: (0.071)	Data loading tiem: (0.000)	Top 1-err: 2.396	Top 5-err: 0.020	Loss: 0.103
+
+Test	* Epoch[91/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 25.280	Top 5-err: 6.310	Loss: 1.116
+====================================================================================================
+Train	* Epoch[92/100]	Time: (0.074)	Data loading tiem: (0.000)	Top 1-err: 2.422	Top 5-err: 0.036	Loss: 0.102
+
+Test	* Epoch[92/100]	Time: (0.027)	Data loading tiem: (0.001)	Top 1-err: 24.770	Top 5-err: 6.190	Loss: 1.119
+====================================================================================================
+Train	* Epoch[93/100]	Time: (0.072)	Data loading tiem: (0.000)	Top 1-err: 2.338	Top 5-err: 0.034	Loss: 0.100
+
+Test	* Epoch[93/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.920	Top 5-err: 6.240	Loss: 1.132
+====================================================================================================
+Train	* Epoch[94/100]	Time: (0.073)	Data loading tiem: (0.000)	Top 1-err: 2.334	Top 5-err: 0.036	Loss: 0.099
+
+Test	* Epoch[94/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.950	Top 5-err: 6.390	Loss: 1.127
+====================================================================================================
+Train	* Epoch[95/100]	Time: (0.072)	Data loading tiem: (0.000)	Top 1-err: 2.098	Top 5-err: 0.028	Loss: 0.094
+
+Test	* Epoch[95/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.710	Top 5-err: 6.370	Loss: 1.136
+====================================================================================================
+Train	* Epoch[96/100]	Time: (0.073)	Data loading tiem: (0.000)	Top 1-err: 2.078	Top 5-err: 0.018	Loss: 0.094
+
+Test	* Epoch[96/100]	Time: (0.024)	Data loading tiem: (0.001)	Top 1-err: 25.000	Top 5-err: 6.280	Loss: 1.146
+====================================================================================================
+Train	* Epoch[97/100]	Time: (0.073)	Data loading tiem: (0.000)	Top 1-err: 2.148	Top 5-err: 0.018	Loss: 0.093
+
+Test	* Epoch[97/100]	Time: (0.027)	Data loading tiem: (0.001)	Top 1-err: 24.880	Top 5-err: 6.380	Loss: 1.130
+====================================================================================================
+Train	* Epoch[98/100]	Time: (0.072)	Data loading tiem: (0.000)	Top 1-err: 2.072	Top 5-err: 0.032	Loss: 0.092
+
+Test	* Epoch[98/100]	Time: (0.027)	Data loading tiem: (0.001)	Top 1-err: 24.860	Top 5-err: 6.270	Loss: 1.142
+====================================================================================================
+Train	* Epoch[99/100]	Time: (0.069)	Data loading tiem: (0.000)	Top 1-err: 2.090	Top 5-err: 0.018	Loss: 0.091
+
+Test	* Epoch[99/100]	Time: (0.026)	Data loading tiem: (0.001)	Top 1-err: 24.820	Top 5-err: 6.130	Loss: 1.141
+====================================================================================================
+Train	* Epoch[100/100]	Time: (0.071)	Data loading tiem: (0.000)	Top 1-err: 1.966	Top 5-err: 0.016	Loss: 0.088
+
+Test	* Epoch[100/100]	Time: (0.025)	Data loading tiem: (0.001)	Top 1-err: 25.150	Top 5-err: 6.170	Loss: 1.151
+----------------------------------------------------------------------------------------------------
+Best accuracy (top-1 and 5 error):	24.44 and 6.06
+total time:	03:21:02

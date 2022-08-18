@@ -1,0 +1,42 @@
+{
+    "os": "Linux-4.15.0-189-generic-x86_64-with-glibc2.17",
+    "python": "3.8.13",
+    "heartbeatAt": "2022-08-18T07:12:50.029160",
+    "startedAt": "2022-08-18T07:12:48.430862",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 10,
+    "cpu_count": 104,
+    "cuda": null,
+    "args": [
+        "--net_type",
+        "resnet",
+        "--dataset",
+        "cifar10",
+        "--depth",
+        "20",
+        "--insize",
+        "32",
+        "--batch_size",
+        "64",
+        "--lr",
+        "0.1",
+        "--epochs",
+        "2",
+        "--no-verbose",
+        "--cuda",
+        "3"
+    ],
+    "state": "running",
+    "program": "train.py",
+    "codePath": "train.py",
+    "git": {
+        "remote": "https://github.com/jaejungscene/self-directed-research.git",
+        "commit": "55693eebb20e5b6d8b3cff4c0c355cb741a27b71"
+    },
+    "email": "ljj0512@gmail.co",
+    "root": "/home/ljj0512/private/project",
+    "host": "ljjDock",
+    "username": "ljj0512",
+    "executable": "/home/ljj0512/.conda/envs/torch/bin/python"
+}

@@ -10,8 +10,10 @@ from utils import ColorJitter, Lighting
 
 def create_model(args, numberofclass):
     if args.net_type == 'resnet':
-        model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck)  # for ResNet
-    elif args.net_type == 'ViT':
+        model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck)
+    elif args.net_type == 'se-resnet':
+        model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck, se=True)
+    elif args.net_type == 'vit':
         model_name = 'B_16_imagenet1k'
         model = ViT(model_name, pretrained=True)
     else:

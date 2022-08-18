@@ -1,0 +1,19 @@
+Files already downloaded and verified
+220378
+=> creating model 'resnet20'
+=> input size:	'32'
+=> dataset:	'cifar10'
+=> batch size:	'64'
+=> epochs:	'2'
+=> the number of model parameters: 220,378
+====================================================================================================
+Train	* Epoch[1/2]	Time: (0.027)	Data loading tiem: (0.000)	Top 1-err: 65.410	Top 5-err: 14.416	Loss: 1.768
+Test	* Epoch[1/2]	Time: (0.009)	Data loading tiem: (0.002)	Top 1-err: 53.420	Top 5-err: 6.870	Loss: 1.442
+Current best accuracy (top-1 and 5 error):	 53.42 and 6.87
+====================================================================================================
+Train	* Epoch[2/2]	Time: (0.023)	Data loading tiem: (0.001)	Top 1-err: 46.226	Top 5-err: 5.556	Loss: 1.273
+Test	* Epoch[2/2]	Time: (0.010)	Data loading tiem: (0.002)	Top 1-err: 43.910	Top 5-err: 4.440	Loss: 1.200
+Current best accuracy (top-1 and 5 error):	 43.91 and 4.44
+====================================================================================================
+Best accuracy (top-1 and 5 error):	 43.91 and 4.44
+total time:	 00:00:46

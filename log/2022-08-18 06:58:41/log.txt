@@ -1,0 +1,6 @@
+model:			resnet20
+input size:		32
+dataset:		cifar10
+batch size:		64
+epochs:			2
+the number of model parameters:	220378

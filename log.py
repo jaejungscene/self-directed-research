@@ -26,13 +26,14 @@ def printSave_end_state(args, best_err1, best_err5, total_time):
 
 
 
-def printSave_start_condition(args, model):
+def printSave_start_condition(args, num_param):
+    print(num_param)
     print("=> creating model '{}'".format(args.net_type+str(args.depth)))
     print("=> input size:\t'{}'".format(args.insize))
     print("=> dataset:\t'{}'".format(args.dataset))
     print("=> batch size:\t'{}'".format(args.batch_size))
     print("=> epochs:\t'{}'".format(args.epochs))
-    print('the number of model parameters: {:,}'.format(sum([p.data.nelement() for p in model.parameters()])))
+    print('=> the number of model parameters: {:,}'.format(num_param))
 
     directory = "log/%s/" % (args.expname)
     if not os.path.exists(directory):
@@ -52,7 +53,8 @@ def printSave_start_condition(args, model):
                 args.insize,
                 args.dataset,
                 args.batch_size,
-                args.epochs
+                args.epochs,
+                num_param
             )
         file.write(content)
         file.close()

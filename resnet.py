@@ -3,13 +3,14 @@ import torch.nn as nn
 import math
 
 class ResNet(nn.Module):
-    def __init__(self, dataset, depth, num_classes, insize, bottleneck=False):
+    def __init__(self, dataset, depth, num_classes, insize, bottleneck=False, se=False):
         super(ResNet, self).__init__()        
-        self.dataset = dataset
-        self.insize = insize
+        self.dataset = dataset # type of dataset
+        self.insize = insize # input size
+        self.se = se
+
         if self.dataset.startswith('cifar') and insize==32: # if dataset is cifar...
             self.inplanes = 16
-            # print(bottleneck)
             if bottleneck == True:
                 n = int((depth - 2) / 9)
                 block = Bottleneck
@@ -43,10 +44,10 @@ class ResNet(nn.Module):
             self.avgpool = nn.AvgPool2d(7) 
             self.fc = nn.Linear(512 * blocks[depth].expansion, num_classes)
 
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
+        for m in self.modules(): 
+            if isinstance(m, nn.Conv2d): # He initialization
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                m.weight.data.normal_(0, math.sqrt(2. / n))
+                m.weight.data.normal_(0, math.sqrt(2. / n)) # normal distribution parameterized by mean=0
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()

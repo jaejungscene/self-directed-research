@@ -8,6 +8,7 @@ import time
 import dataset
 import numpy as np
 import tqdm
+import wandb
 from datetime import datetime
 from log import save_checkpoint, printSave_one_epoch, printSave_start_condition, printSave_end_state
 from utils import accuracy, adjust_learning_rate, AverageMeter, get_learning_rate
@@ -38,8 +39,8 @@ def run():
 
     train_loader, val_loader, numberofclass = dataset.create_dataloader(args)
     model = dataset.create_model(args, numberofclass)
+    printSave_start_condition(args, sum([p.data.nelement() for p in model.parameters()]))
     model = torch.nn.DataParallel(model).cuda()
-    printSave_start_condition(args, model)
 
     # define loss function (criterion) and optimizer
     criterion = nn.CrossEntropyLoss().cuda()
@@ -63,6 +64,7 @@ def run():
             best_err1 = err1
             best_err5 = err5
 
+        wandb.log({'top-1 err': err1, 'top-5 err':err5, 'train loss':train_loss, 'validation loss':val_loss})
         print('Current best accuracy (top-1 and 5 error):\t', best_err1, 'and', best_err5)
         save_checkpoint({
             'epoch': epoch,
@@ -190,4 +192,6 @@ def validate(val_loader, model, criterion, epoch):
 
 
 if __name__ == '__main__':
+    temp = (args.net_type+str(args.depth)+' '+args.dataset+' '+str(args.batch_size)+' '+str(args.insize))
+    wandb.init(project=temp, entity='jaejungscene')
     run()

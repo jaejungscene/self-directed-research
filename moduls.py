@@ -1,19 +1,98 @@
 import torch
 import torch.nn as nn
 
-def conv3x3(in_planes, out_planes, stride=1):
-    "3x3 convolution with padding"
-    return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
-                     padding=1, bias=False)
+# def conv3x3(in_channel, out_channel, stride=1):
+#     "3x3 convolution with padding"
+#     return nn.Conv2d(in_channel, out_channel, kernel_size=3, stride=stride,
+#                      padding=1, bias=False)
 
+# class BasicBlock(nn.Module):
+#     expansion = 1
+
+#     def __init__(self, in_ch, out_ch, stride=1, downsample=None, se=False):
+#         super(BasicBlock, self).__init__()
+#         self.conv1 = conv3x3(in_ch, out_ch, stride)
+#         self.bn1 = nn.BatchNorm2d(out_ch)
+#         self.conv2 = conv3x3(out_ch, out_ch)
+#         self.bn2 = nn.BatchNorm2d(out_ch)
+#         self.relu = nn.ReLU(inplace=True)
+#         self.se = SEblock(out_ch) if se else nn.Identity()
+
+#         self.downsample = downsample
+#         self.stride = stride
+
+#     def forward(self, x):
+#         residual = x
+
+#         out = self.conv1(x)
+#         out = self.bn1(out)
+#         out = self.relu(out)
+
+#         out = self.conv2(out)
+#         out = self.bn2(out)
+
+#         if self.downsample is not None:
+#             residual = self.downsample(x)
+
+#         out = self.se(out)
+#         out += residual
+#         out = self.relu(out)
+
+#         return out
+
+
+
+# class Bottleneck(nn.Module):
+#     expansion = 4
+
+#     def __init__(self, in_ch, out_ch, stride=1, downsample=None, se=False):
+#         super(Bottleneck, self).__init__()
+
+#         self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=1, bias=False)
+#         self.bn1 = nn.BatchNorm2d(out_ch)
+#         self.conv2 = nn.Conv2d(out_ch, out_ch, kernel_size=3, stride=stride, padding=1, bias=False)
+#         self.bn2 = nn.BatchNorm2d(out_ch)
+#         self.conv3 = nn.Conv2d(out_ch, out_ch * Bottleneck.expansion, kernel_size=1, bias=False)
+#         self.bn3 = nn.BatchNorm2d(out_ch * Bottleneck.expansion)
+#         self.relu = nn.ReLU(inplace=True)
+#         self.se = SEblock(out_ch) if se else nn.Identity()
+
+#         self.downsample = downsample
+#         self.stride = stride
+
+#     def forward(self, x):
+#         residual = x
+
+#         out = self.conv1(x)
+#         out = self.bn1(out)
+#         out = self.relu(out)
+
+#         out = self.conv2(out)
+#         out = self.bn2(out)
+#         out = self.relu(out)
+
+#         out = self.conv3(out)
+#         out = self.bn3(out)
+#         if self.downsample is not None:
+#             residual = self.downsample(x)
+#         out = self.se(out)
+#         out += residual
+#         out = self.relu(out)
+
+#         return out
+
+def conv3x3(in_channel, out_channel, stride=1):
+    "3x3 convolution with padding"
+    return nn.Conv2d(in_channel, out_channel, kernel_size=3, stride=stride,
+                     padding=1, bias=False)
 
 
 class BasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, inplanes, planes, stride=1, downsample=None):
+    def __init__(self, in_planes, planes, stride=1, downsample=None, se=False):
         super(BasicBlock, self).__init__()
-        self.conv1 = conv3x3(inplanes, planes, stride)
+        self.conv1 = conv3x3(in_planes, planes, stride)
         self.bn1 = nn.BatchNorm2d(planes)
         self.conv2 = conv3x3(planes, planes)
         self.bn2 = nn.BatchNorm2d(planes)
@@ -41,14 +120,13 @@ class BasicBlock(nn.Module):
         return out
 
 
-
 class Bottleneck(nn.Module):
     expansion = 4
 
-    def __init__(self, inplanes, planes, stride=1, downsample=None):
+    def __init__(self, in_planes, planes, stride=1, downsample=None, se=False):
         super(Bottleneck, self).__init__()
 
-        self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
+        self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
         self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
@@ -82,26 +160,31 @@ class Bottleneck(nn.Module):
 
 
 
-class SEblock(nn.Module):
-    r = 16
-    def __init__(self, channel):
-        super(SEblock, self).__init__()
 
-        self.avg_pool = nn.AdaptiveAvgPool2d(1)
-        self.fc = nn.Sequential(
-            nn.Linear(channel, channel//self.r, bias=False),
-            nn.ReLU(),
-            nn.Linear(channel//self.r, channel, bias=False),
+
+class ConvNormAct(nn.Sequential):
+    def __init__(self, in_ch, out_ch, kernel_size, norm_layer=nn.BatchNorm2d, stride=1, padding=0, groups=1, act=True):
+        super(ConvNormAct, self).__init__(
+            nn.Conv2d(in_ch, out_ch, kernel_size, stride, padding, bias=False, groups=groups),
+            norm_layer(out_ch),
+            nn.ReLU(inplace=True) if act else nn.Identity()
+        )
+
+class SEblock(nn.Sequential):
+    def __init__(self, channel, r=16):
+        super(SEblock, self).__init__(
+            # squeeze
+            nn.AdaptiveAvgPool2d(1), 
+
+            # excitation
+            ConvNormAct(channel, channel//r, 1),
+            nn.Conv2d(channel//r, channel, 1, bias=True),
             nn.Sigmoid(),
         )
     
     def forward(self, x):
-        b, c, _, _ = x.size()
-        y = self.avg_pool(x)
-        y = y.view(b, c)  # flatten
-        y = self.fc(y)
-        y = y.view(b, c, 1, 1)
-        return x * y.expand_as(x) # y의 형상을 x로 맞추어줌
+        out = super(SEblock, self).forward(x)
+        return x + out
 
 
 
@@ -112,7 +195,7 @@ class CBAM(nn.Module):
 
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.max_pool = nn.AdaptiveMaxPool2d(1)
-        self.fc = nn.Sequential(
+        self.excitation = nn.Sequential(
             nn.Linear(channel, channel//self.r, bias=False),
             nn.ReLU(),
             nn.Linear(channel//self.r, channel, bias=False),
@@ -125,11 +208,11 @@ class CBAM(nn.Module):
         b, c, _, _ = x.size()
         y1 = self.avg_pool(x)
         y1 = y1.view(b, c)  # flatten
-        y1 = self.fc(y1)
+        y1 = self.excitation(y1)
         y1 = y1.view(b, c, 1, 1)
         y2 = self.max_pool(x)
         y2 = y2.view(b, c)  # flatten
-        y2 = self.fc(y2)
+        y2 = self.excitation(y2)
         y2 = y2.view(b, c, 1, 1)
         channel_attention = nn.Sigmoid()(y1 + y2)
         x = x * channel_attention.expand_as(x) # hadamard product (y의 형상을 x로 맞추어줌)
