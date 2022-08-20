@@ -99,10 +99,6 @@ class Bottleneck(nn.Module):
 
         return out
 
-
-
-
-
 class ConvNormAct(nn.Sequential):
     def __init__(self, in_ch, out_ch, kernel_size, norm_layer=nn.BatchNorm2d, stride=1, padding=0, groups=1, act=True):
         super(ConvNormAct, self).__init__(
@@ -110,6 +106,7 @@ class ConvNormAct(nn.Sequential):
             norm_layer(out_ch),
             nn.ReLU(inplace=True) if act else nn.Identity()
         )
+
 
 class SEblock(nn.Sequential):
     def __init__(self, channel, r=16):

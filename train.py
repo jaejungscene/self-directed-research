@@ -193,5 +193,5 @@ def validate(val_loader, model, criterion, epoch):
 
 if __name__ == '__main__':
     temp = (args.net_type+str(args.depth)+'_'+args.dataset+'_'+'b'+str(args.batch_size)+'_'+'s'+str(args.insize))
-    wandb.init(project=temp, entity='jaejungscene')
+    wandb.init(project='self-directed-research', name=temp, entity='jaejungscene')
     run()

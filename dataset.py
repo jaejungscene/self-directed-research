@@ -18,7 +18,7 @@ def create_model(args, numberofclass):
         model = ViT(model_name, pretrained=True)
     else:
         raise Exception('unknown network architecture: {}'.format(args.net_type))
-    print(model)
+    # print(model)
     return model
         
 
