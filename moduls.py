@@ -1,23 +1,6 @@
 import torch
 import torch.nn as nn
 
-# def conv3x3(in_channel, out_channel, stride=1):
-#     "3x3 convolution with padding"
-#     return nn.Conv2d(in_channel, out_channel, kernel_size=3, stride=stride,
-#                      padding=1, bias=False)
-
-# class BasicBlock(nn.Module):
-#     expansion = 1
-
-#     def __init__(self, in_ch, out_ch, stride=1, downsample=None, se=False):
-#         super(BasicBlock, self).__init__()
-#         self.conv1 = conv3x3(in_ch, out_ch, stride)
-#         self.bn1 = nn.BatchNorm2d(out_ch)
-#         self.conv2 = conv3x3(out_ch, out_ch)
-#         self.bn2 = nn.BatchNorm2d(out_ch)
-#         self.relu = nn.ReLU(inplace=True)
-#         self.se = SEblock(out_ch) if se else nn.Identity()
-
 def conv3x3(in_channel, out_channel, stride=1):
     "3x3 convolution with padding"
     return nn.Conv2d(in_channel, out_channel, kernel_size=3, stride=stride,

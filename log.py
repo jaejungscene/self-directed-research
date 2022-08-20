@@ -27,7 +27,7 @@ def printSave_end_state(args, best_err1, best_err5, total_time):
 
 
 def printSave_start_condition(args, num_param):
-    print(num_param)
+    print(args.expname)
     print("=> creating model '{}'".format(args.net_type+str(args.depth)))
     print("=> input size:\t'{}'".format(args.insize))
     print("=> dataset:\t'{}'".format(args.dataset))
