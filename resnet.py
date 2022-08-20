@@ -3,11 +3,19 @@ import torch.nn as nn
 import math
 
 class ResNet(nn.Module):
-    def __init__(self, dataset, depth, num_classes, insize, bottleneck=False, se=False):
+    def __init__(   self,
+                    dataset,
+                    depth,
+                    num_classes,
+                    insize,
+                    bottleneck=False,
+                    se=False,
+                    cbam=False  ):
         super(ResNet, self).__init__()        
         self.dataset = dataset # type of dataset
         self.insize = insize # input size
         self.se = se
+        self.cbam = cbam
 
         if self.dataset.startswith('cifar') and insize==32: # if dataset is cifar...
             self.inplanes = 16
@@ -62,10 +70,10 @@ class ResNet(nn.Module):
             )
 
         layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample=downsample, se=self.se))
+        layers.append(block(self.inplanes, planes, stride, downsample=downsample, se=self.se, cbam=self.cbam))
         self.inplanes = planes * block.expansion
         for i in range(1, blocks):
-            layers.append(block(self.inplanes, planes, se=self.se))
+            layers.append(block(self.inplanes, planes, se=self.se, cbam=self.cbam))
 
         return nn.Sequential(*layers)
 

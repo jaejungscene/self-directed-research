@@ -10,7 +10,7 @@ def conv3x3(in_channel, out_channel, stride=1):
 class BasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, in_planes, planes, stride=1, downsample=None, se=False):
+    def __init__(self, in_planes, planes, stride=1, downsample=None, se=False, cbam=False):
         super(BasicBlock, self).__init__()
         self.conv1 = conv3x3(in_planes, planes, stride)
         self.bn1 = nn.BatchNorm2d(planes)
@@ -18,6 +18,7 @@ class BasicBlock(nn.Module):
         self.bn2 = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU(inplace=True)
         self.se = SEblock(planes) if se else nn.Identity()
+        self.cbam = CBAM(planes * Bottleneck.expansion) if se else nn.Identity()
 
         self.downsample = downsample
         self.stride = stride
@@ -36,6 +37,8 @@ class BasicBlock(nn.Module):
             residual = self.downsample(x)
 
         out = self.se(out)
+        out = self.cbam(out)
+
         out += residual
         out = self.relu(out)
 
@@ -45,7 +48,7 @@ class BasicBlock(nn.Module):
 class Bottleneck(nn.Module):
     expansion = 4
 
-    def __init__(self, in_planes, planes, stride=1, downsample=None, se=False):
+    def __init__(self, in_planes, planes, stride=1, downsample=None, se=False, cbam=False):
         super(Bottleneck, self).__init__()
 
         self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=1, bias=False)
@@ -56,6 +59,7 @@ class Bottleneck(nn.Module):
         self.bn3 = nn.BatchNorm2d(planes * Bottleneck.expansion)
         self.relu = nn.ReLU(inplace=True)
         self.se = SEblock(planes * Bottleneck.expansion) if se else nn.Identity()
+        self.cbam = CBAM(planes * Bottleneck.expansion) if se else nn.Identity()
 
         self.downsample = downsample
         self.stride = stride
@@ -77,6 +81,8 @@ class Bottleneck(nn.Module):
             residual = self.downsample(x)
 
         out = self.se(out)
+        out = self.cbam(out)
+
         out += residual
         out = self.relu(out)
 
@@ -110,10 +116,8 @@ class SEblock(nn.Sequential):
 
 
 class CBAM(nn.Module):
-    r = 16
-    def __init__(self, channel):
+    def __init__(self, channel, r=16):
         super(CBAM, self).__init__()
-
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.max_pool = nn.AdaptiveMaxPool2d(1)
         self.excitation = nn.Sequential(
