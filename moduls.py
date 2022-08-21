@@ -18,7 +18,7 @@ class BasicBlock(nn.Module):
         self.bn2 = nn.BatchNorm2d(planes)
         self.relu = nn.ReLU(inplace=True)
         self.se = SEblock(planes) if se else nn.Identity()
-        self.cbam = CBAM(planes * Bottleneck.expansion) if se else nn.Identity()
+        self.cbam = CBAM(planes) if cbam else nn.Identity()
 
         self.downsample = downsample
         self.stride = stride
@@ -59,7 +59,7 @@ class Bottleneck(nn.Module):
         self.bn3 = nn.BatchNorm2d(planes * Bottleneck.expansion)
         self.relu = nn.ReLU(inplace=True)
         self.se = SEblock(planes * Bottleneck.expansion) if se else nn.Identity()
-        self.cbam = CBAM(planes * Bottleneck.expansion) if se else nn.Identity()
+        self.cbam = CBAM(planes * Bottleneck.expansion) if cbam else nn.Identity()
 
         self.downsample = downsample
         self.stride = stride
@@ -121,9 +121,9 @@ class CBAM(nn.Module):
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.max_pool = nn.AdaptiveMaxPool2d(1)
         self.excitation = nn.Sequential(
-            nn.Linear(channel, channel//self.r, bias=False),
+            nn.Linear(channel, channel//r, bias=False),
             nn.ReLU(),
-            nn.Linear(channel//self.r, channel, bias=False),
+            nn.Linear(channel//r, channel, bias=False),
         )
 
         self.conv7 = nn.Conv2d(2, 1, kernel_size=7, padding=7//2, bias=False)

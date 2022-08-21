@@ -64,7 +64,8 @@ def run():
             best_err1 = err1
             best_err5 = err5
 
-        wandb.log({'top-1 err': err1, 'top-5 err':err5, 'train loss':train_loss, 'validation loss':val_loss})
+        if args.wandb == True:
+            wandb.log({'top-1 err': err1, 'top-5 err':err5, 'train loss':train_loss, 'validation loss':val_loss})
         print('Current best accuracy (top-1 and 5 error):\t', best_err1, 'and', best_err5)
         save_checkpoint({
             'epoch': epoch,
@@ -192,6 +193,8 @@ def validate(val_loader, model, criterion, epoch):
 
 
 if __name__ == '__main__':
-    temp = (args.net_type+str(args.depth)+'_'+args.dataset+'_'+'b'+str(args.batch_size)+'_'+'s'+str(args.insize))
-    wandb.init(project='self-directed-research', name=temp, entity='jaejungscene')
+    if args.wandb == True:
+        temp = (args.net_type+str(args.depth)+'_'+args.dataset+'_'+'b'+str(args.batch_size)+'_'+'s'+str(args.insize))
+        wandb.init(project='self-directed-research', name=temp, entity='jaejungscene')
+    
     run()

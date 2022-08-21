@@ -13,12 +13,15 @@ def create_model(args, numberofclass):
         model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck)
     elif args.net_type == 'se-resnet':
         model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck, se=True)
+    elif args.net_type == 'cbam-resnet':
+        print('check')
+        model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck, cbam=True)
     elif args.net_type == 'vit':
         model_name = 'B_16_imagenet1k'
         model = ViT(model_name, pretrained=True)
     else:
         raise Exception('unknown network architecture: {}'.format(args.net_type))
-    # print(model)
+    print(model)
     return model
         
 

@@ -22,6 +22,8 @@ def get_args_parser():
                     help='input size')
     parser.add_argument('--cuda', type=str, default='0', 
                     help='select used GPU')
+    parser.add_argument('--wandb', type=int, default=1, 
+                    help='choose activating wandb')
 
 
     parser.add_argument('--expname', default=result_folder_name, type=str,
