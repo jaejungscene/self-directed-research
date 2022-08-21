@@ -1,6 +1,21 @@
 import torch
 import torch.nn as nn
 
+
+# class MySizeUp(nn.Module):
+
+#     def __init__(self, in_channels, out_channels, bilinear=False):
+#         super().__init__()
+
+#         # if bilinear, use the normal convolutions to reduce the number of channels
+#         if bilinear:
+#             self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
+#             self.conv = DoubleConv(in_channels, out_channels, in_channels // 2)
+#         else:
+#             self.up = nn.ConvTranspose2d(in_channels , in_channels // 2, kernel_size=2, stride=2)
+#             self.conv = DoubleConv(in_channels, out_channels)
+
+
 def conv3x3(in_channel, out_channel, stride=1):
     "3x3 convolution with padding"
     return nn.Conv2d(in_channel, out_channel, kernel_size=3, stride=stride,
@@ -87,6 +102,7 @@ class Bottleneck(nn.Module):
         out = self.relu(out)
 
         return out
+
 
 class ConvNormAct(nn.Sequential):
     def __init__(self, in_ch, out_ch, kernel_size, norm_layer=nn.BatchNorm2d, stride=1, padding=0, groups=1, act=True):

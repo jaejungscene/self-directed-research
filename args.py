@@ -8,7 +8,7 @@ def get_args_parser():
                     help='networktype: resnet')
     parser.add_argument('--dataset', dest='dataset', default='cifar10', type=str,
                     help='dataset (options: cifar10, cifar100 and imageNet)')
-    parser.add_argument('--depth', default=32, type=int,
+    parser.add_argument('--depth', default=50, type=int,
                     help='depth of the network (default: 32)')
     parser.add_argument('-b', '--batch_size', default=128, type=int,
                     metavar='N', help='mini-batch size (default: 256)')
@@ -25,6 +25,8 @@ def get_args_parser():
     parser.add_argument('--wandb', type=int, default=1, 
                     help='choose activating wandb')
 
+    parser.add_argument('--add_classifier', type=int, default=0, 
+                    help='choose whether adding classifier in the end of pretrined model')
 
     parser.add_argument('--expname', default=result_folder_name, type=str,
                     help='name of experiment')

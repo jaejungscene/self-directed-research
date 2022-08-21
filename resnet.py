@@ -3,19 +3,21 @@ import torch.nn as nn
 import math
 
 class ResNet(nn.Module):
-    def __init__(   self,
+    def __init__(   
+                    self,
                     dataset,
                     depth,
                     num_classes,
                     insize,
                     bottleneck=False,
                     se=False,
-                    cbam=False  ):
+                    cbam=False,
+                ):
         super(ResNet, self).__init__()        
         self.dataset = dataset # type of dataset
         self.insize = insize # input size
-        self.se = se
-        self.cbam = cbam
+        self.se = se # choosing activating the seUnit
+        self.cbam = cbam # choosing activating the CBAM
 
         if self.dataset.startswith('cifar') and insize==32: # if dataset is cifar...
             self.inplanes = 16

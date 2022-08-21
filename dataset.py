@@ -7,6 +7,8 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from pytorch_pretrained_vit import ViT
 from utils import ColorJitter, Lighting
+from torchvision import models
+from pretrained import *
 
 def create_model(args, numberofclass):
     if args.net_type == 'resnet':
@@ -14,16 +16,16 @@ def create_model(args, numberofclass):
     elif args.net_type == 'se-resnet':
         model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck, se=True)
     elif args.net_type == 'cbam-resnet':
-        print('check')
         model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck, cbam=True)
-    elif args.net_type == 'vit':
-        model_name = 'B_16_imagenet1k'
-        model = ViT(model_name, pretrained=True)
+    elif args.net_type == 'pretrained-resnet':
+        model = create_PT_resnet50(numberofclass, args.insize, args.add_classifier)
+    elif args.net_type == 'pretrained-vit':
+        model = create_PT_ViT(numberofclass, args.insize)
     else:
         raise Exception('unknown network architecture: {}'.format(args.net_type))
     print(model)
     return model
-        
+    
 
 def create_dataloader(args):
     if args.dataset.startswith('cifar'):
@@ -43,7 +45,7 @@ def create_dataloader(args):
         else:
             transform_train = transforms.Compose([
                 transforms.Resize((224,224)),
-                transforms.RandomCrop(224, padding=4),
+                transforms.RandomCrop(224, padding=28),
                 transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
                 normalize,

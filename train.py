@@ -194,7 +194,10 @@ def validate(val_loader, model, criterion, epoch):
 
 if __name__ == '__main__':
     if args.wandb == True:
-        temp = (args.net_type+str(args.depth)+'_'+args.dataset+'_'+'b'+str(args.batch_size)+'_'+'s'+str(args.insize))
+        if args.net_type == 'pretrained-vit':
+            temp = (args.net_type+'_'+args.dataset+'_'+'b'+str(args.batch_size)+'_'+'s'+str(args.insize))
+        else:
+            temp = (args.net_type+str(args.depth)+'_'+args.dataset+'_'+'b'+str(args.batch_size)+'_'+'s'+str(args.insize))
         wandb.init(project='self-directed-research', name=temp, entity='jaejungscene')
     
     run()
