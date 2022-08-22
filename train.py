@@ -6,8 +6,8 @@ os.environ['CUDA_VISIBLE_DEVICES'] = args.cuda
 
 import time
 import dataset
+import create
 import numpy as np
-import tqdm
 import wandb
 from datetime import datetime
 from log import save_checkpoint, printSave_one_epoch, printSave_start_condition, printSave_end_state
@@ -38,25 +38,23 @@ def run():
     global args, best_err1, best_err5
 
     train_loader, val_loader, numberofclass = dataset.create_dataloader(args)
-    model = dataset.create_model(args, numberofclass)
+    model = create.create_model(args, numberofclass)
     printSave_start_condition(args, sum([p.data.nelement() for p in model.parameters()]))
     model = torch.nn.DataParallel(model).cuda()
 
     # define loss function (criterion) and optimizer
-    criterion = nn.CrossEntropyLoss().cuda()
-    optimizer = torch.optim.SGD(model.parameters(), args.lr,
-                                momentum=args.momentum,
-                                weight_decay=args.weight_decay, nesterov=True)
+    criterion = create.create_criterion(args)
+    optimizer = create.create_optimizer(args, model)
     cudnn.benchmark = True
 
     for epoch in range(0, args.epochs):
         adjust_learning_rate(optimizer, epoch, args)
 
         # train for one epoch
-        train_loss = train(train_loader, model, criterion, optimizer, epoch)
+        train_loss = train(train_loader, model, criterion, optimizer, epoch, args)
 
         # evaluate on validation set
-        err1, err5, val_loss = validate(val_loader, model, criterion, epoch)
+        err1, err5, val_loss = validate(val_loader, model, criterion, epoch, args)
 
         # remember best prec@1 and save checkpoint
         is_best = err1 <= best_err1 # if err1 <= best_err1, is_best is True
@@ -84,7 +82,7 @@ def run():
 
 
 
-def train(train_loader, model, criterion, optimizer, epoch):
+def train(train_loader, model, criterion, optimizer, epoch, args):
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -106,16 +104,24 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
         # compute output
         output = model(input)
-        loss = criterion(output, target)
+        # print('train tuple:',type(output))
+        # print(len(output))
+        if args.distil == True:
+            loss = criterion(input, output, target)
+        else:
+            loss = criterion(output, target)
 
         # measure accuracy and record loss
-        err1, err5 = accuracy(output.data, target, topk=(1, 5))
+        if args.distil == True:
+            err1, err5 = accuracy(output[0].data, target, topk=(1, 5))
+        else:
+            err1, err5 = accuracy(output.data, target, topk=(1, 5))
 
         losses.update(loss.item(), input.size(0))
         top1.update(err1.item(), input.size(0))
         top5.update(err5.item(), input.size(0))
 
-        # compute gradient and do SGD step
+        # compute gradient and do optimizer step
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -144,7 +150,7 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
 
 
-def validate(val_loader, model, criterion, epoch):
+def validate(val_loader, model, criterion, epoch, args):
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -160,7 +166,10 @@ def validate(val_loader, model, criterion, epoch):
         target = target.cuda()
 
         output = model(input)
-        loss = criterion(output, target)
+        if args.distil == True:
+            loss = criterion(input, output, target, val=True)
+        else:
+            loss = criterion(output, target)
 
         # measure accuracy and record loss
         err1, err5 = accuracy(output.data, target, topk=(1, 5))
@@ -194,10 +203,10 @@ def validate(val_loader, model, criterion, epoch):
 
 if __name__ == '__main__':
     if args.wandb == True:
-        if args.net_type == 'pretrained-vit':
-            temp = (args.net_type+'_'+args.dataset+'_'+'b'+str(args.batch_size)+'_'+'s'+str(args.insize))
-        else:
+        if args.net_type.endswith('resnet'):
             temp = (args.net_type+str(args.depth)+'_'+args.dataset+'_'+'b'+str(args.batch_size)+'_'+'s'+str(args.insize))
+        else:
+            temp = (args.net_type+'_'+args.dataset+'_'+'b'+str(args.batch_size)+'_'+'s'+str(args.insize)+'_distil-'+str(args.distil))
         wandb.init(project='self-directed-research', name=temp, entity='jaejungscene')
     
     run()

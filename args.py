@@ -24,9 +24,15 @@ def get_args_parser():
                     help='select used GPU')
     parser.add_argument('--wandb', type=int, default=1, 
                     help='choose activating wandb')
-
+    parser.add_argument('--optim', type=str, default='sgd', 
+                    help='select optimizer')
     parser.add_argument('--add_classifier', type=int, default=0, 
                     help='choose whether adding classifier in the end of pretrined model')
+
+    parser.add_argument('--distil', type=int, default=0, 
+                    help='choose whether to do knowledge distillation')
+    parser.add_argument('--distil_type', type=str, default='hard', 
+                    help='choose what type of knowledge distillation')
 
     parser.add_argument('--expname', default=result_folder_name, type=str,
                     help='name of experiment')

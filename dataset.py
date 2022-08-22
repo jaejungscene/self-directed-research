@@ -2,30 +2,10 @@
 
 import os
 import torch
-import resnet as RN
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
-from pytorch_pretrained_vit import ViT
 from utils import ColorJitter, Lighting
-from torchvision import models
-from pretrained import *
 
-def create_model(args, numberofclass):
-    if args.net_type == 'resnet':
-        model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck)
-    elif args.net_type == 'se-resnet':
-        model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck, se=True)
-    elif args.net_type == 'cbam-resnet':
-        model = RN.ResNet(args.dataset, args.depth, numberofclass, args.insize, args.bottleneck, cbam=True)
-    elif args.net_type == 'pretrained-resnet':
-        model = create_PT_resnet50(numberofclass, args.insize, args.add_classifier)
-    elif args.net_type == 'pretrained-vit':
-        model = create_PT_ViT(numberofclass, args.insize)
-    else:
-        raise Exception('unknown network architecture: {}'.format(args.net_type))
-    print(model)
-    return model
-    
 
 def create_dataloader(args):
     if args.dataset.startswith('cifar'):
@@ -39,6 +19,18 @@ def create_dataloader(args):
                 normalize,
             ])
             transform_test = transforms.Compose([
+                transforms.ToTensor(),
+                normalize
+            ])
+        elif args.net_type == 'pretrained-vit' or args.net_type == 'pretrained-deit':
+            transform_train = transforms.Compose([
+                transforms.Resize((224,224)),
+                transforms.RandomCrop(224, padding=28),
+                transforms.ToTensor(),
+                normalize,
+            ])
+            transform_test = transforms.Compose([
+                transforms.Resize((224,224)),
                 transforms.ToTensor(),
                 normalize
             ])

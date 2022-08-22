@@ -28,11 +28,16 @@ def printSave_end_state(args, best_err1, best_err5, total_time):
 
 def printSave_start_condition(args, num_param):
     print(args.expname)
-    print("=> creating model '{}'".format(args.net_type+str(args.depth)))
+    if args.net_type.endswith('resnet'):
+        print("=> creating model '{}'".format(args.net_type+str(args.depth)))
+    else:
+        print("=> creating model '{}'".format(args.net_type))
     print("=> input size:\t'{}'".format(args.insize))
     print("=> dataset:\t'{}'".format(args.dataset))
     print("=> batch size:\t'{}'".format(args.batch_size))
     print("=> epochs:\t'{}'".format(args.epochs))
+    print("=> running rate:\t'{}'".format(args.lr))
+    print("=> optimizer:\t'{}'".format(args.optim))
     print('=> the number of model parameters: {:,}'.format(num_param))
 
     directory = "log/%s/" % (args.expname)
