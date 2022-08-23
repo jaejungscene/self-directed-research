@@ -7,9 +7,10 @@ from distillationloss import DistillationLoss
 
 def create_criterion(args):    
     if args.distil == True:  #  <---------------- implement it yourself before training
-        teacher = RN.ResNet(args.dataset, 50, 100, args.insize, args.bottleneck)
+        print('=> distil type :',args.distil_type)
+        teacher = RN.ResNet(args.dataset, 50, 100, 224, True)
         teacher  = nn.DataParallel(teacher).cuda()
-        checkpoint = torch.load('/home/ljj0512/private/project/log/2022-08-21 09:23:52/checkpoint.pth.tar')
+        checkpoint = torch.load('/home/ljj0512/private/project/log/2022-08-23 04:23:23/checkpoint.pth.tar')
         teacher.load_state_dict(checkpoint['state_dict'])
         teacher.eval()
         criterion = DistillationLoss(

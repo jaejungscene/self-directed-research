@@ -29,6 +29,8 @@ def get_args_parser():
     parser.add_argument('--add_classifier', type=int, default=0, 
                     help='choose whether adding classifier in the end of pretrined model')
 
+    # parser.add_argument('--dropout', type=float, default=0.1, 
+    #                 help='choose whether to do knowledge distillation')
     parser.add_argument('--distil', type=int, default=0, 
                     help='choose whether to do knowledge distillation')
     parser.add_argument('--distil_type', type=str, default='hard', 
