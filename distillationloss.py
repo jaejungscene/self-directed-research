@@ -13,10 +13,11 @@ class DistillationLoss(torch.nn.Module):
     taking a teacher model prediction and using it as additional supervision.
     """
     def __init__(self, base_criterion: torch.nn.Module, teacher_model: torch.nn.Module,
-                 distillation_type: str, alpha: float, tau: float):
+                 distillation_type: str, alpha: float, tau: float, teacher_model01=None):
         super().__init__()
         self.base_criterion = base_criterion
         self.teacher_model = teacher_model
+        self.teacher_model01 = teacher_model01
         assert distillation_type in ['none', 'soft', 'hard']
         self.distillation_type = distillation_type
         self.alpha = alpha
@@ -46,6 +47,8 @@ class DistillationLoss(torch.nn.Module):
         # don't backprop throught the teacher
         with torch.no_grad():
             teacher_outputs = self.teacher_model(inputs)
+            if self.teacher_model01 != None:
+                teacher_outputs01 = self.teacher_model01(inputs)
 
         if self.distillation_type == 'soft':
             T = self.tau
@@ -60,11 +63,26 @@ class DistillationLoss(torch.nn.Module):
                 reduction='sum',
                 log_target=True
             ) * (T * T) / outputs_kd.numel()
+            if self.teacher_model01 is not None:
+                distillation_loss01 = F.kl_div(
+                    F.log_softmax(outputs_kd / T, dim=1),
+                    #We provide the teacher's targets in log probability because we use log_target=True 
+                    #(as recommended in pytorch https://github.com/pytorch/pytorch/blob/9324181d0ac7b4f7949a574dbc3e8be30abe7041/torch/nn/functional.py#L2719)
+                    #but it is possible to give just the probabilities and set log_target=False. In our experiments we tried both.
+                    F.log_softmax(teacher_outputs / T, dim=1),
+                    reduction='sum',
+                    log_target=True
+                ) * (T * T) / outputs_kd.numel()
             #We divide by outputs_kd.numel() to have the legacy PyTorch behavior. 
             #But we also experiments output_kd.size(0) 
             #see issue 61(https://github.com/facebookresearch/deit/issues/61) for more details
         elif self.distillation_type == 'hard':
             distillation_loss = F.cross_entropy(outputs_kd, teacher_outputs.argmax(dim=1))
+            if self.teacher_model01 is not None:
+                distillation_loss01 = F.cross_entropy(outputs_kd, teacher_outputs01.argmax(dim=1))
 
-        loss = base_loss * (1 - self.alpha) + distillation_loss * self.alpha
+        if self.teacher_model01 is None:
+            loss = base_loss * (1 - self.alpha) + distillation_loss * self.alpha
+        else:
+            loss = base_loss * (1 - self.alpha) + ((distillation_loss+distillation_loss01)/2) * self.alpha
         return loss

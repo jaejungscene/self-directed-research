@@ -5,16 +5,65 @@ from torchvision import models
 import resnet as RN
 from distillationloss import DistillationLoss
 
-def create_criterion(args):    
-    if args.distil == True:  #  <---------------- implement it yourself before training
+def create_criterion(args, numclass):
+    if args.distil == 1:  #  <---------------- implement it yourself before training
         print('=> distil type :',args.distil_type)
-        teacher = RN.ResNet(args.dataset, 50, 100, 224, True)
+        print('=> distil :',args.distil)
+        teacher = RN.ResNet(args.dataset, 50, numclass, args.insize, True)
         teacher  = nn.DataParallel(teacher).cuda()
-        checkpoint = torch.load('/home/ljj0512/private/project/log/2022-08-23 04:23:23/checkpoint.pth.tar')
+        checkpoint = torch.load('/home/ljj0512/private/project/log/2022-08-23 12:20:26/checkpoint.pth.tar')
         teacher.load_state_dict(checkpoint['state_dict'])
         teacher.eval()
         criterion = DistillationLoss(
             nn.CrossEntropyLoss().cuda(), teacher, args.distil_type, 0.5, 1.0
+        )
+    elif args.distil == 2:  #  <---------------- implement it yourself before training
+        print('=> distil type :',args.distil_type)
+        print('=> distil :',args.distil)
+        teacher = create_PT_DeiT(numclass, args.insize, 0)
+        teacher  = nn.DataParallel(teacher).cuda()
+        checkpoint = torch.load('/home/ljj0512/private/project/log/2022-08-23 12:02:30/checkpoint.pth.tar')
+        teacher.load_state_dict(checkpoint['state_dict'])
+        teacher.eval()
+        criterion = DistillationLoss(
+            nn.CrossEntropyLoss().cuda(), teacher, args.distil_type, 0.5, 1.0
+        )
+    elif args.distil == 3:  #  <---------------- implement it yourself before training
+        print('=> distil type :',args.distil_type)
+        print('=> distil :',args.distil)
+        teacher = RN.ResNet(args.dataset, 50, numclass, args.insize, True)
+        teacher  = nn.DataParallel(teacher).cuda()
+        checkpoint = torch.load('/home/ljj0512/private/project/log/2022-08-23 12:20:26/checkpoint.pth.tar')
+        teacher.load_state_dict(checkpoint['state_dict'])
+        teacher.eval()
+
+        teacher01 = create_PT_DeiT(numclass, args.insize, 1)
+        teacher01  = nn.DataParallel(teacher01).cuda()
+        # checkpoint01 = torch.load('/home/ljj0512/private/project/log/2022-08-23 12:02:30/checkpoint.pth.tar')
+        checkpoint01 = torch.load('/home/ljj0512/private/project/log/2022-08-24 02:00:54/checkpoint.pth.tar')
+        teacher01.load_state_dict(checkpoint01['state_dict'])
+        teacher01.eval()
+
+        criterion = DistillationLoss(
+            nn.CrossEntropyLoss().cuda(), teacher, args.distil_type, 0.5, 1.0, teacher01
+        )
+    elif args.distil == 4:  #  <---------------- implement it yourself before training
+        print('=> distil type :',args.distil_type)
+        print('=> distil :',args.distil)
+        teacher = RN.ResNet(args.dataset, 50, numclass, args.insize, True)
+        teacher  = nn.DataParallel(teacher).cuda()
+        checkpoint = torch.load('/home/ljj0512/private/project/log/2022-08-23 12:20:26/checkpoint.pth.tar')
+        teacher.load_state_dict(checkpoint['state_dict'])
+        teacher.eval()
+        
+        teacher01 = RN.ResNet(args.dataset, 50, numclass, args.insize, True)
+        teacher01  = nn.DataParallel(teacher01).cuda()
+        checkpoint01 = torch.load('/home/ljj0512/private/project/log/2022-08-24 02:02:44/checkpoint.pth.tar')
+        teacher01.load_state_dict(checkpoint01['state_dict'])
+        teacher01.eval()
+
+        criterion = DistillationLoss(
+            nn.CrossEntropyLoss().cuda(), teacher, args.distil_type, 0.5, 1.5, teacher01
         )
     else:
         criterion = nn.CrossEntropyLoss().cuda()
@@ -68,7 +117,7 @@ def create_PT_ViT(numclass, insize, num_model=0):
 
 
 def create_PT_DeiT(numclass, insize, distil=False):
-    if distil == True:
+    if distil > 0:
         model = torch.hub.load('facebookresearch/deit:main', 'deit_small_distilled_patch16_224', pretrained=True)
         model.head = nn.Linear(384, numclass)
         model.head_dist = nn.Linear(384, numclass)

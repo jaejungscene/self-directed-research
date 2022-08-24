@@ -43,7 +43,7 @@ def run():
     model = torch.nn.DataParallel(model).cuda()
 
     # define loss function (criterion) and optimizer
-    criterion = create.create_criterion(args)
+    criterion = create.create_criterion(args, numberofclass)
     optimizer = create.create_optimizer(args, model)
     cudnn.benchmark = True
 
@@ -106,13 +106,13 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
         output = model(input)
         # print('train tuple:',type(output))
         # print(len(output))
-        if args.distil == True:
+        if args.distil > 0:
             loss = criterion(input, output, target)
         else:
             loss = criterion(output, target)
 
         # measure accuracy and record loss
-        if args.distil == True:
+        if args.distil > 0:
             err1, err5 = accuracy(output[0].data, target, topk=(1, 5))
         else:
             err1, err5 = accuracy(output.data, target, topk=(1, 5))
@@ -166,10 +166,16 @@ def validate(val_loader, model, criterion, epoch, args):
         target = target.cuda()
 
         output = model(input)
-        if args.distil == True:
+        if args.distil > 0:
             loss = criterion(input, output, target, val=True)
+            # if args.wandb == True:
+                # wandb.log({"roc": wandb.plot.roc_curve(target, output[0])})
+                # wandb.log({"pr": wandb.plots.precision_recall(target, output[0])})
         else:
             loss = criterion(output, target)
+            # if args.wandb == True:
+                # wandb.log({"roc": wandb.plot.roc_curve(target, output)})
+                # wandb.log({"pr": wandb.plots.precision_recall(target, output)})
 
         # measure accuracy and record loss
         err1, err5 = accuracy(output.data, target, topk=(1, 5))

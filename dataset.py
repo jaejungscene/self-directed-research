@@ -26,6 +26,7 @@ def create_dataloader(args):
             transform_train = transforms.Compose([
                 transforms.Resize((224,224)),
                 transforms.RandomCrop(224, padding=28),
+                transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
                 normalize,
             ])
