@@ -1,7 +1,11 @@
-import time
-print('start')
-time.sleep(5)
-print("finish!!")
+import os
+os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
+os.environ['CUDA_VISIBLE_DEVICES'] = "8,9"
+import torch
+
+# print(torch.cuda.device_count())
+torch.nn.DataParallel(torch.randn((3,3200,3200)).cuda()).cuda()
+print(torch.cuda.device_count())
 
 # import argparse
 # import os
