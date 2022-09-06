@@ -51,18 +51,18 @@ def create_dataloader(args):
 
         if args.dataset == 'cifar100':
             train_loader = torch.utils.data.DataLoader(
-                datasets.CIFAR100('./data', train=True, download=True, transform=transform_train),
+                datasets.CIFAR100('../data/cifar-100', train=True, download=True, transform=transform_train),
                 batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
             val_loader = torch.utils.data.DataLoader(
-                datasets.CIFAR100('./data', train=False, transform=transform_test),
+                datasets.CIFAR100('../data/cifar-100', train=False, transform=transform_test),
                 batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
             numberofclass = 100
         elif args.dataset == 'cifar10':
             train_loader = torch.utils.data.DataLoader(
-                datasets.CIFAR10('./data', train=True, download=True, transform=transform_train),
+                datasets.CIFAR10('../data/cifar-10', train=True, download=True, transform=transform_train),
                 batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
             val_loader = torch.utils.data.DataLoader(
-                datasets.CIFAR10('./data', train=False, transform=transform_test),
+                datasets.CIFAR10('../data/cifar-10', train=False, transform=transform_test),
                 batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
             numberofclass = 10
         else:
