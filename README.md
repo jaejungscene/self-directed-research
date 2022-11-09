@@ -1,4 +1,7 @@
-# self-directed research
+# purpose (self-directed research)
+
+
+## model
 - implemented model: resnet, se-resnet, cbam-resnet
 - pretrained and fine-tuned model: ViT, DeiT
 
